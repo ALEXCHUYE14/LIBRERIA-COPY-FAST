@@ -1,37 +1,44 @@
- 
-        // Funcionalidad para el menú de hamburguesa
-        const menuToggle = document.getElementById('menu-toggle');
-        const navMenu = document.getElementById('nav-menu');
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const navBar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const contactForm = document.getElementById('contact-form');
 
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+    // Abre/cierra el menú al hacer clic en el botón de hamburguesa
+    hamburgerMenu.addEventListener('click', function() {
+        navBar.classList.toggle('active');
+        hamburgerMenu.classList.toggle('active');
+    });
+
+    // Cierra el menú al hacer clic en un enlace de navegación
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navBar.classList.remove('active');
+            hamburgerMenu.classList.remove('active');
         });
+    });
+
+    // Funcionalidad para el formulario de contacto (enviar por WhatsApp)
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
         
-        document.querySelectorAll('.nav-menu a').forEach(item => {
-            item.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-            });
-        });
+        const nombre = document.getElementById('nombre').value;
+        const correo = document.getElementById('correo').value;
+        const mensaje = document.getElementById('mensaje').value;
 
-        // Funcionalidad para el formulario de WhatsApp
-        document.getElementById('send-wa').addEventListener('click', function() {
-            // Reemplaza <TU_NÚMERO_DE_WHATSAPP> con tu número, incluyendo el código de país.
-            const whatsappNumber = '924996961'; 
+        // Reemplaza '51987654321' con tu número de WhatsApp real, incluyendo el código de país
+        const numeroWhatsApp = '924996961'; 
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const service = document.getElementById('service').value;
-            const message = document.getElementById('message').value;
+        // Crea el mensaje pre-escrito con los datos del formulario
+        const whatsappMessage = `Hola, mi nombre es ${nombre} y mi correo es ${correo}. Te escribo desde tu página web para el siguiente mensaje:
+        
+${mensaje}`;
 
-            // Validación básica para campos requeridos
-            if (name === "" || email === "" || message === "") {
-                alert("Por favor, completa todos los campos requeridos.");
-                return;
-            }
+        // Codifica el mensaje para que sea una URL segura
+        const encodedMessage = encodeURIComponent(whatsappMessage);
 
-            // Construir el mensaje
-            const waMessage = ¡Hola! 👋%0A%0A*He llenado el formulario en tu página web:*%0A%0A*Nombre:* ${name}%0A*Email:* ${email}%0A*Servicio de interés:* ${service}%0A*Mensaje:* ${message};
-
-            // Abrir WhatsApp en una nueva pestaña
-            window.open(https://wa.me/${whatsappNumber}?text=${waMessage}, '_blank');
-        });
+        // Abre el enlace de WhatsApp
+        const whatsappUrl = `https://wa.me/${numeroWhatsApp}?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
+    });
+});
